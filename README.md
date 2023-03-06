@@ -10,7 +10,8 @@
     * MVVM, Paging3, Retrofit2
 
 ## 구조도
-* 추후 추가 예정
+* Fragment Structure
+  ![fragment-structure](./images/fragment-structure.png)
 
 ## 기능 설명
 * 기능은 크게 2가지로 나눠진다.
