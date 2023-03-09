@@ -15,6 +15,13 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "API_URL", properties["api.url"]
+        buildConfigField "String", "API_HEADER_NAME", properties["api.header.name"]
+        buildConfigField "String", "API_HEADER_VALUE", properties["api.header.value"]
     }
 
     buildTypes {

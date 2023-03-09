@@ -17,5 +17,6 @@ class EveryNewsListViewHolder(
     fun bind(articles: Articles) {
         Glide.with(this@EveryNewsListViewHolder.itemView.context).load(articles.urlToImage).into(binding.newsImage)
         binding.newsTitle.text = articles.title
+        binding.newsPublishedAt.text = articles.publishedAt
     }
 }
