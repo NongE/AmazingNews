@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.nong.amazingnews.EveryNewsViewModel
+import com.nong.amazingnews.R
 import com.nong.amazingnews.databinding.FragmentEveryNewsListBinding
 import com.nong.amazingnews.fragment.adapter.EveryNewsListAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -53,7 +55,24 @@ class EveryNewsListFragment : Fragment() {
 
             setOnItemClickListener(object : EveryNewsListAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int) {
-                    Toast.makeText(v.context, "$position is clicked!", Toast.LENGTH_SHORT).show()
+                    val fragmentTransaction = parentFragmentManager.beginTransaction()
+                    val fragment = EveryNewsDetailFragment().apply {
+                        arguments = Bundle().apply {
+                            putParcelable("news_data", adapter.snapshot()[position])
+                        }
+                    }
+
+                    fragmentTransaction.setCustomAnimations(
+                        com.google.android.material.R.anim.m3_bottom_sheet_slide_in,
+                        com.google.android.material.R.anim.m3_bottom_sheet_slide_in,
+                        com.google.android.material.R.anim.m3_bottom_sheet_slide_out,
+                        com.google.android.material.R.anim.m3_bottom_sheet_slide_out
+                    )
+
+                    fragmentTransaction.add(R.id.every_news_container, fragment, "detailNews")
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.show(fragment)
+                    fragmentTransaction.commit()
                 }
             })
         }

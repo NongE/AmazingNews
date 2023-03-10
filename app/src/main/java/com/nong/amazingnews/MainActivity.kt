@@ -2,6 +2,8 @@ package com.nong.amazingnews
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import com.nong.amazingnews.databinding.ActivityMainBinding
 import com.nong.amazingnews.fragment.EveryNewsFragment
 import com.nong.amazingnews.fragment.SearchNewsFragment
@@ -38,6 +40,19 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                
+                supportFragmentManager.fragments.find {fragment ->
+                    fragment.isVisible && isHaveBackStack(fragment)
+                }?.let {
+                    if (popFragment(it)) return
+                }
+
+                finish()
+            }
+        })
     }
 
     private fun changeFragment(fragmentInfo: FragmentInfo) {
@@ -50,8 +65,14 @@ class MainActivity : AppCompatActivity() {
                 FragmentInfo.SEARCH_NEWS_FRAGMENT -> SearchNewsFragment()
                 FragmentInfo.SETTINGS_FRAGMENT -> SettingsFragment()
             }
+
             fragmentTransaction.add(R.id.main_container, fragment, fragmentInfo.tag)
         }
+
+        fragmentTransaction.setCustomAnimations(
+            com.google.android.material.R.anim.m3_bottom_sheet_slide_in,
+            com.google.android.material.R.anim.m3_bottom_sheet_slide_out
+        )
 
         fragmentTransaction.show(fragment)
 
@@ -65,5 +86,27 @@ class MainActivity : AppCompatActivity() {
             }
 
         fragmentTransaction.commit()
+    }
+
+    private fun isHaveBackStack(fragment: Fragment): Boolean {
+        val childFragmentManager = fragment.childFragmentManager
+        return childFragmentManager.backStackEntryCount > 0
+    }
+
+    private fun popFragment(fragment: Fragment): Boolean {
+        val childFragmentManager = fragment.childFragmentManager
+
+        childFragmentManager.fragments.find { childFragment ->
+            childFragment.isVisible
+        }?.let { visibleFragment ->
+            if (isHaveBackStack(visibleFragment)) {
+                popFragment(visibleFragment)
+            } else {
+                childFragmentManager.popBackStack()
+                return true
+            }
+        }
+
+        return false
     }
 }

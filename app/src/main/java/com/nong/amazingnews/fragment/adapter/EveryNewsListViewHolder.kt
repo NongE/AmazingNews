@@ -7,8 +7,8 @@ import com.nong.amazingnews.network.Articles
 
 class EveryNewsListViewHolder(
     private val binding: ItemEveryNewsListBinding,
-    onItemClickListener: EveryNewsListAdapter.OnItemClickListener) :
-    RecyclerView.ViewHolder(binding.root) {
+    onItemClickListener: EveryNewsListAdapter.OnItemClickListener
+) : RecyclerView.ViewHolder(binding.root) {
 
     init{
         itemView.setOnClickListener { onItemClickListener.onClick(it, adapterPosition) }
