@@ -7,7 +7,7 @@
     android:layout_margin="10dp">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/newsImage"
+        android:id="@+id/news_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#777777"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/newsTitle"
+        android:id="@+id/news_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#AA000000"
@@ -27,8 +27,8 @@
         android:padding="10dp"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/newsImage"
-        app:layout_constraintEnd_toEndOf="@+id/newsImage"
-        app:layout_constraintStart_toStartOf="@+id/newsImage" />
+        app:layout_constraintBottom_toBottomOf="@+id/news_image"
+        app:layout_constraintEnd_toEndOf="@+id/news_image"
+        app:layout_constraintStart_toStartOf="@+id/news_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
