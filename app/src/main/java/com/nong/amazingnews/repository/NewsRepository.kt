@@ -18,4 +18,17 @@ class NewsRepository {
 
         return req.body
     }
+
+    suspend fun searchNewsFromEveryNews(
+        domain: String = "engadget.com",
+        page: Int = 10,
+        q: String,
+        pageSize: Int
+    ): GetEveryNewsListResponse? {
+        val req = newsDataSource.searchNewsFromEveryNews(domain, page, q, pageSize)
+
+        if (req.isFailed || !req.isSuccess) return null
+
+        return req.body
+    }
 }

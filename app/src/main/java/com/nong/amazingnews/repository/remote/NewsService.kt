@@ -13,4 +13,12 @@ interface NewsService {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
     ): Response<GetEveryNewsListResponse>
+
+    @GET("/v2/everything?language=en")
+    suspend fun searchNewsFromEveryNews(
+        @Query("domains") domain: String,
+        @Query("page") page: Int,
+        @Query("q") q: String,
+        @Query("pageSize") pageSize: Int
+    ): Response<GetEveryNewsListResponse>
 }
