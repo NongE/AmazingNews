@@ -17,6 +17,7 @@ import com.nong.amazingnews.R
 import com.nong.amazingnews.SearchNewsViewModel
 import com.nong.amazingnews.databinding.FragmentSearchNewsBinding
 import com.nong.amazingnews.fragment.adapter.SearchNewsListAdapter
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ class SearchNewsFragment : Fragment() {
         return binding.root
     }
 
+    @OptIn(FlowPreview::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,12 +66,18 @@ class SearchNewsFragment : Fragment() {
 
         binding.searchRecyclerView.adapter = adapter
 
-        binding.editText
-            .textChange()
+        binding.editText.textChange()
+            .debounce(1500)
             .onEach {
-                if(it?.length != 0){ viewModel.query(it.toString()) }
+                if(it.isNullOrBlank()) {
+                    binding.shimmerActivityMain.stopShimmer()
+                    binding.shimmerActivityMain.visibility = View.GONE
+                }else{
+                    binding.shimmerActivityMain.startShimmer()
+                    binding.shimmerActivityMain.visibility = View.VISIBLE
+                    if(it?.length != 0){ viewModel.query(it.toString()) }
+                }
             }
-            .debounce(1000)
             .launchIn(lifecycleScope)
 
         lifecycleScope.launch {
