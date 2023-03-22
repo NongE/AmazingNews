@@ -41,6 +41,15 @@ class NewsDataSource {
         return newsServiceHandler { newsService.getEveryNews(domain, page, pageSize) }
     }
 
+    suspend fun searchNewsFromEveryNews(
+        domain: String = "engadget.com",
+        page: Int,
+        q: String,
+        pageSize: Int
+    ): NewsResponse<GetEveryNewsListResponse> {
+        return newsServiceHandler { newsService.searchNewsFromEveryNews(domain, page, q, pageSize) }
+    }
+
     private inline fun <T> newsServiceHandler(api: () -> retrofit2.Response<T>): NewsResponse<T> {
         return try {
             NewsResponse.success(api.invoke())
